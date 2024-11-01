@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-
+from fastapi import FastAPI, HTTPException
 app = FastAPI()
 
 class TemperatureData(BaseModel):
@@ -19,7 +19,7 @@ def get_temperature(city: str):
     temperature = temperature_db.get(city)
     if temperature is not None:
         return {"city": city, "temperature": temperature}
-    return {"city": city, "temperature": "Data not available"}
+    raise HTTPException(status_code=404, detail="Data not available")
 
 @app.post("/temperature/")
 def set_temperature(data: TemperatureData):

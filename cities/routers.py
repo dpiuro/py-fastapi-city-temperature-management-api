@@ -45,8 +45,8 @@ async def update_city(
 
     if result is None:
         raise HTTPException(
-            status_code=400,
-            detail="City with current id none exist"
+            status_code=404,
+            detail="City with the given id does not exist"
         )
 
     return result

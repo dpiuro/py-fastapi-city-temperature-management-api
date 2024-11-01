@@ -37,7 +37,7 @@ async def create_city(db: AsyncSession, city: schemas.CityCreateSchema):
 
 
 async def update_city(db: AsyncSession, city_id: int, city: schemas.CityUpdateSchema):
-    existing_city = await get_city_by_id(db=db, city_id=city_id)
+    existing_city = await get_city_by_id(city_id=city_id, db=db)
 
     if existing_city is None:
         return None
@@ -57,7 +57,8 @@ async def update_city(db: AsyncSession, city_id: int, city: schemas.CityUpdateSc
 
     updated_id = result.scalar_one_or_none()
 
-    resp = {**city.model_dump(), "id": updated_id}
+    resp = {**city.model_dump(), "id": result.inserted_primary_key[0]}
+
     return resp
 
 
